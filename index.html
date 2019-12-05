@@ -1,0 +1,27 @@
+<html>
+
+<h1>abc</h1>
+
+<script src="https://unpkg.com/rxjs@5.5.2/bundles/Rx.min.js"> </script>
+<script>
+    const onSubscribe = observer => {
+        let number = 1;
+        const handle = setInterval(() => {
+            observer.next(number++);
+            if (number > 3) {
+                clearInterval(handle);
+                observer.complete();
+            }
+        }, 1000);
+    }
+    const source$ = new Rx.Observable(onSubscribe);
+    const theObserver = {
+        next: item => {
+            console.log(item);
+        },
+        complete: () => console.log('NoMoreData'),
+    }
+    source$.subscribe(theObserver);
+</script>
+
+</html>
