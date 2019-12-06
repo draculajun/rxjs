@@ -1,0 +1,24 @@
+<html>
+
+<div>
+    <button id="getStar">GetRxJSStarCount</button>
+    <div id="text"></div>
+</div>
+
+<script src="https://unpkg.com/rxjs@5.5.2/bundles/Rx.min.js"> </script>
+<script>
+    //调用ajax,defer延迟创建Observable
+    const observableFactory = () => Rx.Observable.ajax('https://api.github.com/repos/ReactiveX/rxjs', {
+        responseType: 'json'
+    });
+    //source$被创建出时，并没有任何有实际数据的Observable产生，只有当他被订阅时，observableFactory才会被调用
+    const souce$ = Rx.Observable.defer(observableFactory);
+    Rx.Observable.fromEvent(document.querySelector('#getStar'), 'click').subscribe(() => {
+        souce$.subscribe(value => {
+            const starCount = value.response.stargazers_count;
+            document.querySelector('#text').innerText = starCount;
+        });
+    });
+</script>
+
+</html>
