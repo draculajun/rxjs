@@ -1,0 +1,39 @@
+<html>
+
+<h1>abc</h1>
+
+<script src="https://unpkg.com/rxjs@5.5.2/bundles/Rx.min.js"> </script>
+<script>
+    const onSubscribe = observer => {
+        let number = 1;
+        const handle = setInterval(() => {
+            observer.next(number++);
+        }, 1000);
+        //取消订阅
+        return {
+            unsubscribe: () => {
+                clearInterval(handle);
+            }
+        }
+    }
+    const source$ = Rx.Observable.create(onSubscribe);
+
+    map$ = source$.map(e => e * e);
+    const subscription = map$.subscribe(
+        item => console.log(item), //默认next方法
+        err => console.log(err), //error方法
+        () => console.log('No More Data') //complete方法
+    );
+
+    // const subscription = source$.map(e => e * e).subscribe(
+    //     item => console.log(item), //默认next方法
+    //     err => console.log(err), //error方法
+    //     () => console.log('No More Data') //complete方法
+    // );
+    //取消订阅
+    setTimeout(() => {
+        subscription.unsubscribe();
+    }, 3500);
+</script>
+
+</html>

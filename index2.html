@@ -10,18 +10,18 @@
             observer.next(number++);
             if (number > 3) {
                 clearInterval(handle);
+                observer.error('SometingWrong');
                 observer.complete();
             }
         }, 1000);
     }
     const source$ = new Rx.Observable(onSubscribe);
-    const theObserver = {
-        next: item => {
-            console.log(item);
-        },
-        complete: () => console.log('NoMoreData'),
-    }
-    source$.subscribe(theObserver);
+    //对index1.html的简化
+    source$.subscribe(
+        item => console.log(item),  //默认next方法
+        err => console.log(err),    //error方法
+        () => console.log('No More Data')   //complete方法
+    );
 </script>
 
 </html>
