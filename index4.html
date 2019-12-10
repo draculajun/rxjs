@@ -1,0 +1,18 @@
+<html>
+
+<h1>abc</h1>
+
+<script src="https://unpkg.com/rxjs@5.5.2/bundles/Rx.min.js"> </script>
+<script>
+    const promise = null;
+    setTimeout(() => {
+        promise = Promise.resolve('good');
+    }, 3000);
+
+    const source$ = Rx.Observable.from(promise);
+    source$.subscribe(console.log,
+        error => console.log('catch', error),
+        () => console.log('complete'));
+</script>
+
+</html>
